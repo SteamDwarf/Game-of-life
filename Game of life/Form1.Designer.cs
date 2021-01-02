@@ -75,17 +75,17 @@ namespace Game_of_life
             // 
             // butStop
             // 
-            this.butStop.Location = new System.Drawing.Point(77, 129);
+            this.butStop.Location = new System.Drawing.Point(3, 158);
             this.butStop.Name = "butStop";
-            this.butStop.Size = new System.Drawing.Size(75, 23);
+            this.butStop.Size = new System.Drawing.Size(149, 23);
             this.butStop.TabIndex = 5;
-            this.butStop.Text = "Стоп";
+            this.butStop.Text = "Пауза/Продолжить";
             this.butStop.UseVisualStyleBackColor = true;
             this.butStop.Click += new System.EventHandler(this.butStopClick);
             // 
             // butStart
             // 
-            this.butStart.Location = new System.Drawing.Point(3, 129);
+            this.butStart.Location = new System.Drawing.Point(40, 129);
             this.butStart.Name = "butStart";
             this.butStart.Size = new System.Drawing.Size(75, 23);
             this.butStart.TabIndex = 4;
@@ -128,6 +128,11 @@ namespace Game_of_life
             this.nudResolution.Size = new System.Drawing.Size(120, 20);
             this.nudResolution.TabIndex = 0;
             this.nudResolution.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.nudResolution.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // pictureBox
             // 
@@ -137,11 +142,11 @@ namespace Game_of_life
             this.pictureBox.Size = new System.Drawing.Size(604, 443);
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
-            this.pictureBox.Click += new System.EventHandler(this.pictureBox_Click);
+            this.pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox_MouseMove);
             // 
             // timer
             // 
-            this.timer.Interval = 1000;
+            this.timer.Interval = 50;
             this.timer.Tick += new System.EventHandler(this.timerTick);
             // 
             // Form1

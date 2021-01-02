@@ -52,7 +52,7 @@ namespace Game_of_life
 
         private void CellGeneration()
         {
-            graphics.Clear(Color.AliceBlue);
+            graphics.Clear(Color.LemonChiffon);
 
             var newField = new bool[columns, rows];
 
@@ -120,6 +120,11 @@ namespace Game_of_life
             return neighbours;
         }
 
+        public void ManualChanging(int x, int y)
+        {
+
+        }
+
         private void butStartClick(object sender, EventArgs e)
         {
             StartGame();
@@ -132,12 +137,29 @@ namespace Game_of_life
 
         private void butStopClick(object sender, EventArgs e)
         {
-            StopGame();
+            if (timer.Enabled)
+            {
+                StopGame();  
+            } else
+            {
+                timer.Start();
+            }
         }
 
-        private void pictureBox_Click(object sender, EventArgs e)
+        private void pictureBox_MouseMove(object sender, MouseEventArgs e)
         {
-
+            if (e.Button == MouseButtons.Left)
+            {
+                int x = e.Location.X / resolution;
+                int y = e.Location.Y / resolution;
+                field[x, y] = true;
+            }
+            else if (e.Button == MouseButtons.Right)
+            {
+                int x = e.Location.X / resolution;
+                int y = e.Location.Y / resolution;
+                field[x, y] = false;
+            }
         }
     }
 }

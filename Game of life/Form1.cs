@@ -30,11 +30,12 @@ namespace Game_of_life
             nudResolution.Enabled = false;
 
             resolution = (int)nudResolution.Value;
+            decimal density = nudDensity.Maximum + nudDensity.Minimum - nudDensity.Value;
 
             gameEngine = new GameEngine
             (pictureBox.Width / resolution, 
              pictureBox.Width / resolution, 
-             (int)nudDensity.Value
+             (int)density
             );
             gameEngine.FieldFooling();
 

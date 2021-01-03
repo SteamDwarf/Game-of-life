@@ -31,6 +31,8 @@ namespace Game_of_life
         {
             this.components = new System.ComponentModel.Container();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.butManualStart = new System.Windows.Forms.Button();
+            this.butManualMode = new System.Windows.Forms.Button();
             this.butStop = new System.Windows.Forms.Button();
             this.butStart = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
@@ -39,9 +41,7 @@ namespace Game_of_life
             this.nudResolution = new System.Windows.Forms.NumericUpDown();
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.timer = new System.Windows.Forms.Timer(this.components);
-            this.butManualMode = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.butManualStart = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -78,6 +78,26 @@ namespace Game_of_life
             this.splitContainer1.SplitterDistance = 159;
             this.splitContainer1.TabIndex = 0;
             // 
+            // butManualStart
+            // 
+            this.butManualStart.Location = new System.Drawing.Point(4, 278);
+            this.butManualStart.Name = "butManualStart";
+            this.butManualStart.Size = new System.Drawing.Size(153, 23);
+            this.butManualStart.TabIndex = 7;
+            this.butManualStart.Text = "Старт";
+            this.butManualStart.UseVisualStyleBackColor = true;
+            this.butManualStart.Click += new System.EventHandler(this.butManualStartClick);
+            // 
+            // butManualMode
+            // 
+            this.butManualMode.Location = new System.Drawing.Point(4, 248);
+            this.butManualMode.Name = "butManualMode";
+            this.butManualMode.Size = new System.Drawing.Size(153, 23);
+            this.butManualMode.TabIndex = 6;
+            this.butManualMode.Text = "Режим Рисования";
+            this.butManualMode.UseVisualStyleBackColor = true;
+            this.butManualMode.Click += new System.EventHandler(this.butManualModeClick);
+            // 
             // butStop
             // 
             this.butStop.Location = new System.Drawing.Point(3, 158);
@@ -111,10 +131,20 @@ namespace Game_of_life
             // nudDensity
             // 
             this.nudDensity.Location = new System.Drawing.Point(10, 88);
+            this.nudDensity.Maximum = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
             this.nudDensity.Name = "nudDensity";
             this.nudDensity.Size = new System.Drawing.Size(120, 20);
             this.nudDensity.TabIndex = 2;
             this.nudDensity.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.nudDensity.Value = new decimal(new int[] {
+            15,
+            0,
+            0,
+            0});
             // 
             // label1
             // 
@@ -134,7 +164,7 @@ namespace Game_of_life
             this.nudResolution.TabIndex = 0;
             this.nudResolution.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudResolution.Value = new decimal(new int[] {
-            1,
+            10,
             0,
             0,
             0});
@@ -155,29 +185,9 @@ namespace Game_of_life
             this.timer.Interval = 50;
             this.timer.Tick += new System.EventHandler(this.timerTick);
             // 
-            // butManualMode
-            // 
-            this.butManualMode.Location = new System.Drawing.Point(4, 248);
-            this.butManualMode.Name = "butManualMode";
-            this.butManualMode.Size = new System.Drawing.Size(153, 23);
-            this.butManualMode.TabIndex = 6;
-            this.butManualMode.Text = "Режим Рисования";
-            this.butManualMode.UseVisualStyleBackColor = true;
-            this.butManualMode.Click += new System.EventHandler(this.butManualModeClick);
-            // 
             // timer1
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1Tick);
-            // 
-            // butManualStart
-            // 
-            this.butManualStart.Location = new System.Drawing.Point(4, 278);
-            this.butManualStart.Name = "butManualStart";
-            this.butManualStart.Size = new System.Drawing.Size(153, 23);
-            this.butManualStart.TabIndex = 7;
-            this.butManualStart.Text = "Старт";
-            this.butManualStart.UseVisualStyleBackColor = true;
-            this.butManualStart.Click += new System.EventHandler(this.butManualStartClick);
             // 
             // Form1
             // 

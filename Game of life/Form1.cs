@@ -14,9 +14,7 @@ namespace Game_of_life
     {
         private Graphics graphics;
         private int resolution;
-        private bool[,] field;
-        private int rows;
-        private int columns;
+        private GameEngine gameEngine;
 
         public Form1()
         {
@@ -32,49 +30,29 @@ namespace Game_of_life
             nudResolution.Enabled = false;
 
             resolution = (int)nudResolution.Value;
-            rows = pictureBox.Height / resolution;
-            columns = pictureBox.Width / resolution;
-            field = new bool[columns, rows];
 
-            Random random = new Random();
-            for (int x = 0; x < columns; x++ )
-            {
-                for (int y = 0; y < rows; y++)
-                {
-                    field[x, y] = random.Next((int)nudDensity.Value) == 0;
-                }
-            }
+            gameEngine = new GameEngine
+            (pictureBox.Width / resolution, 
+             pictureBox.Width / resolution, 
+             (int)nudDensity.Value
+            );
 
             pictureBox.Image = new Bitmap(pictureBox.Width, pictureBox.Height);
             graphics = Graphics.FromImage(pictureBox.Image);
             timer.Start();
         }
 
-        private void CellGeneration()
+        private void CellDrawing()
         {
             graphics.Clear(Color.LemonChiffon);
 
-            var newField = new bool[columns, rows];
+            bool[,] generation = gameEngine.GetGeneration();
 
-            for (int x = 0; x < columns; x++)
+            for (int x = 0; x < generation.GetLength(0); x++)
             {
-                for (int y = 0; y < rows; y++)
-                {
-                    int neighbours = CountNeighbours(x, y);
-                    bool hasLife = field[x, y];
-
-                    if (!hasLife && neighbours == 3)
-                    {
-                        newField[x, y] = true;
-
-                    } else if (hasLife && neighbours < 4 && neighbours > 1)
-                    {
-                        newField[x, y] = true;
-
-                    } else
-                    {
-                        newField[x, y] = false; ;
-                    }
+                for (int y = 0; y < generation.GetLength(1); y++)
+                { 
+                    bool hasLife = generation[x, y];
 
                     if (hasLife)
                     {
@@ -83,8 +61,8 @@ namespace Game_of_life
                 }
             }
 
-            field = newField;
             pictureBox.Refresh();
+            gameEngine.CellGeneration();
         }
 
         public void StopGame()
@@ -96,34 +74,11 @@ namespace Game_of_life
             nudResolution.Enabled = true;
         }
 
-        public int CountNeighbours(int x, int y)
-        {
-            int neighbours = 0;
 
-            for (int i = -1; i < 2; i++)
-            {
-                for (int j = -1; j < 2; j++)
-                {
-                    int col = (x + i + columns) % columns;
-                    int row = (y + j + rows) % rows;
-
-                    bool hasLife = field[col, row];
-                    bool selfChecking = col == x && row == y;
-
-                    if (hasLife && !selfChecking)
-                    {
-                        neighbours++;
-                    }
-                }
-            }
-
-            return neighbours;
-        }
-
-        public void ManualChanging(int x, int y)
+        /*public void ManualChanging(int x, int y)
         {
 
-        }
+        }*/
 
         private void butStartClick(object sender, EventArgs e)
         {
@@ -132,7 +87,7 @@ namespace Game_of_life
 
         private void timerTick(object sender, EventArgs e)
         {
-            CellGeneration();
+            CellDrawing();
         }
 
         private void butStopClick(object sender, EventArgs e)
@@ -152,13 +107,15 @@ namespace Game_of_life
             {
                 int x = e.Location.X / resolution;
                 int y = e.Location.Y / resolution;
-                field[x, y] = true;
+
+                gameEngine.AddCell(x, y);
             }
             else if (e.Button == MouseButtons.Right)
             {
                 int x = e.Location.X / resolution;
                 int y = e.Location.Y / resolution;
-                field[x, y] = false;
+
+                gameEngine.RemoveCell(x, y);
             }
         }
     }

@@ -11,15 +11,20 @@ namespace Game_of_life
         private bool[,] field;
         private int columns;
         private int rows;
+        int density;
         Random random = new Random();
 
         public GameEngine(int columns, int rows, int density)
         {
             this.columns = columns;
             this.rows = rows;
+            this.density = density;
 
             field = new bool[columns, rows];
+        }
 
+         public void FieldFooling()
+        {
             for (int x = 0; x < columns; x++)
             {
                 for (int y = 0; y < rows; y++)

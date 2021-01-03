@@ -36,10 +36,12 @@ namespace Game_of_life
              pictureBox.Width / resolution, 
              (int)nudDensity.Value
             );
+            gameEngine.FieldFooling();
 
             pictureBox.Image = new Bitmap(pictureBox.Width, pictureBox.Height);
             graphics = Graphics.FromImage(pictureBox.Image);
             timer.Start();
+            timer1.Start();
         }
 
         private void CellDrawing()
@@ -62,7 +64,6 @@ namespace Game_of_life
             }
 
             pictureBox.Refresh();
-            gameEngine.CellGeneration();
         }
 
         public void StopGame()
@@ -75,10 +76,24 @@ namespace Game_of_life
         }
 
 
-        /*public void ManualChanging(int x, int y)
+        public void ManualMode()
         {
+            timer.Stop();
 
-        }*/
+            resolution = (int)nudResolution.Value;
+
+            gameEngine = new GameEngine
+            (pictureBox.Width / resolution,
+             pictureBox.Width / resolution,
+             (int)nudDensity.Value
+            );
+
+            pictureBox.Image = new Bitmap(pictureBox.Width, pictureBox.Height);
+            graphics = Graphics.FromImage(pictureBox.Image);
+            graphics.Clear(Color.LemonChiffon);
+
+            timer1.Start();
+        }
 
         private void butStartClick(object sender, EventArgs e)
         {
@@ -87,7 +102,7 @@ namespace Game_of_life
 
         private void timerTick(object sender, EventArgs e)
         {
-            CellDrawing();
+            gameEngine.CellGeneration();
         }
 
         private void butStopClick(object sender, EventArgs e)
@@ -118,5 +133,32 @@ namespace Game_of_life
                 gameEngine.RemoveCell(x, y);
             }
         }
+
+        private void pictureBox_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                int x = e.Location.X / resolution;
+                int y = e.Location.Y / resolution;
+
+                gameEngine.AddCell(x, y);
+            }
+        }
+
+        private void butManualModeClick(object sender, EventArgs e)
+        {
+            ManualMode();
+        }
+
+        private void butManualStartClick(object sender, EventArgs e)
+        {
+            timer.Start();
+        }
+
+        private void timer1Tick(object sender, EventArgs e)
+        {
+            CellDrawing();
+        }
+
     }
 }

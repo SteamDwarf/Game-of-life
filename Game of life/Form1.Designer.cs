@@ -39,6 +39,9 @@ namespace Game_of_life
             this.nudResolution = new System.Windows.Forms.NumericUpDown();
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.timer = new System.Windows.Forms.Timer(this.components);
+            this.butManualMode = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.butManualStart = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -59,6 +62,8 @@ namespace Game_of_life
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.butManualStart);
+            this.splitContainer1.Panel1.Controls.Add(this.butManualMode);
             this.splitContainer1.Panel1.Controls.Add(this.butStop);
             this.splitContainer1.Panel1.Controls.Add(this.butStart);
             this.splitContainer1.Panel1.Controls.Add(this.label2);
@@ -142,12 +147,37 @@ namespace Game_of_life
             this.pictureBox.Size = new System.Drawing.Size(604, 443);
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
+            this.pictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox_MouseClick);
             this.pictureBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox_MouseMove);
             // 
             // timer
             // 
             this.timer.Interval = 50;
             this.timer.Tick += new System.EventHandler(this.timerTick);
+            // 
+            // butManualMode
+            // 
+            this.butManualMode.Location = new System.Drawing.Point(4, 248);
+            this.butManualMode.Name = "butManualMode";
+            this.butManualMode.Size = new System.Drawing.Size(153, 23);
+            this.butManualMode.TabIndex = 6;
+            this.butManualMode.Text = "Режим Рисования";
+            this.butManualMode.UseVisualStyleBackColor = true;
+            this.butManualMode.Click += new System.EventHandler(this.butManualModeClick);
+            // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1Tick);
+            // 
+            // butManualStart
+            // 
+            this.butManualStart.Location = new System.Drawing.Point(4, 278);
+            this.butManualStart.Name = "butManualStart";
+            this.butManualStart.Size = new System.Drawing.Size(153, 23);
+            this.butManualStart.TabIndex = 7;
+            this.butManualStart.Text = "Старт";
+            this.butManualStart.UseVisualStyleBackColor = true;
+            this.butManualStart.Click += new System.EventHandler(this.butManualStartClick);
             // 
             // Form1
             // 
@@ -181,6 +211,9 @@ namespace Game_of_life
         private System.Windows.Forms.Button butStop;
         private System.Windows.Forms.Button butStart;
         private System.Windows.Forms.Timer timer;
+        private System.Windows.Forms.Button butManualMode;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button butManualStart;
     }
 }
 

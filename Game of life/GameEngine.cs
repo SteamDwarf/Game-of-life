@@ -12,11 +12,8 @@ namespace Game_of_life
         private int columns;
         private int rows;
         private int density;
-        private int[] antCoordinates = new int[2] {80, 35};
-        private int antCount = 0;
-        private int status = 0;
+        private Ant[,] ants;
         Random random = new Random();
-        Ant ant = new Ant();
 
         public GameEngine(int columns, int rows, int density)
         {
@@ -70,6 +67,7 @@ namespace Game_of_life
             {
                 for (int y = 0; y < rows; y++)
                 {
+
                     int neighbours = CountNeighbours(x, y);
                     bool hasLife = field[x, y];
 
@@ -85,7 +83,7 @@ namespace Game_of_life
                     }
                     else
                     {
-                        newField[x, y] = false; ;
+                        newField[x, y] = false; 
                     }
                 }
             }
@@ -93,41 +91,40 @@ namespace Game_of_life
             field = newField;
         }
 
-        /*public int[,] AntCreating()
+        public void AntCreating(int density)
         {
-            int[,] antsCoordinates = new int[density, density];
+            ants = new Ant[density / 2, density / 2];
 
-            for (int x = 0; x < antCoordinates.GetLength(0); x++)
+            for(int x = 0; x < ants.GetLength(0); x++)
             {
-                for (int y = 0; y < antCoordinates.GetLength(1); y++)
+                for (int y = 0; y < ants.GetLength(1); y++)
                 {
-                    antsCoordinates[x, y] = random.Next(density);
+                    int xAnt = (random.Next(columns) + columns) % columns;
+                    int yAnt = (random.Next(rows) + rows) % rows;
+
+                    Ant ant = new Ant(xAnt, yAnt);
+
+                    ants[x, y] = ant;
                 }
             }
-        }*/
+        }
 
 
         public void AntStart()
         {
-            int[] output = ant.AntRun(status, antCount, field, antCoordinates);
-            int x = output[0];
-            int y = output[1];
-            status = output[2];
-
-            antCoordinates[0] = x;
-            antCoordinates[1] = y;
-            antCount++;
-
-            if (antCount > 3)
+            for (int x = 0; x < ants.GetLength(0); x++)
             {
-                antCount = 0;
+                for (int y = 0; y < ants.GetLength(1); y++)
+                {
+                    Ant ant = ants[x, y];
+                    ant.AntRun(field);
+                }
             }
-
         }
 
-        public int[] GetAntCoordinates()
+        public Ant[,] GetAnts()
         {
-            return antCoordinates;
+            return ants;
         }
 
         public bool[,] GetGeneration()

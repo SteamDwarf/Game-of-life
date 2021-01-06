@@ -70,24 +70,33 @@ namespace Game_of_life
             SetGraphics();
 
             bool[,] generation = gameEngine.GetGeneration();
-            int[] antCoordinates = gameEngine.GetAntCoordinates();
-            int xAnt = antCoordinates[0];
-            int yAnt = antCoordinates[1];
+            Ant[,] ants = gameEngine.GetAnts(); 
+
 
             for (int x = 0; x < generation.GetLength(0); x++)
             {
                 for (int y = 0; y < generation.GetLength(1); y++)
                 {
-                    bool hasLife = generation[x, y];
+                    bool trueField = generation[x, y];
 
-                    if (hasLife)
+                    if (trueField)
                     {
                         graphics.FillRectangle(cellFullColor, x * resolution, y * resolution, resolution, resolution);
 
                     }
-                    else if (x == xAnt && y == yAnt)
+
+                    for (int xAnt = 0; xAnt < ants.GetLength(0); xAnt++)
                     {
-                        graphics.FillRectangle(antColor, x * resolution, y * resolution, resolution, resolution);
+                        for (int yAnt = 0; yAnt < ants.GetLength(1); yAnt++)
+                        {
+                            Ant ant = ants[xAnt, yAnt];
+                            int[] antCordinates = ant.GetAntCordinates();
+
+                            if (x == antCordinates[0] && y == antCordinates[1])
+                            {
+                                graphics.FillRectangle(antColor, x * resolution, y * resolution, resolution, resolution);
+                            }
+                        }
                     }
 
                 }
@@ -134,10 +143,13 @@ namespace Game_of_life
             timer.Stop();
             timer1.Stop();
 
+            int density = (int)nudDensity.Value;
+
             butStopAnt.Enabled = true;
             butManualStart.Enabled = false;
 
             SetProperties();
+            gameEngine.AntCreating(density);
             timerAnt.Start();
         }
 
@@ -277,8 +289,7 @@ namespace Game_of_life
         {
             gameEngine.AntStart();
             AntDrawing();
-        }
 
-        
+        }
     }
 }

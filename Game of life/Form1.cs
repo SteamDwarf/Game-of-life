@@ -15,41 +15,38 @@ namespace Game_of_life
         private Graphics graphics;
         private int resolution;
         private GameEngine gameEngine;
+        private Color backColor = Color.LemonChiffon;
+        private SolidBrush cellFullColor = new SolidBrush(Color.YellowGreen);
+        private SolidBrush antColor = new SolidBrush(Color.Brown);
 
         public Form1()
         {
             InitializeComponent();
         }
 
-        public void StartGame()
+        private void SetGraphics()
         {
-            if (timer.Enabled)
-                return;
+            pictureBox.Image = new Bitmap(pictureBox.Width, pictureBox.Height);
+            graphics = Graphics.FromImage(pictureBox.Image);
+            graphics.Clear(backColor);
+        }
 
-            nudDensity.Enabled = false;
-            nudResolution.Enabled = false;
-            butStop.Enabled = true;
-
+        private void SetProperties()
+        {
             resolution = (int)nudResolution.Value;
             decimal density = nudDensity.Maximum + nudDensity.Minimum - nudDensity.Value;
 
             gameEngine = new GameEngine
-            (pictureBox.Width / resolution, 
-             pictureBox.Width / resolution, 
-             (int)density
-            );
-            gameEngine.FieldFooling();
-
-            timer.Start();
-            timer1.Start();
+           (pictureBox.Width / resolution,
+            pictureBox.Width / resolution,
+            (int)density
+           );
         }
 
         private void CellDrawing()
         {
-            pictureBox.Image = new Bitmap(pictureBox.Width, pictureBox.Height);
-            graphics = Graphics.FromImage(pictureBox.Image);
-            graphics.Clear(Color.LemonChiffon);
-
+            SetGraphics();
+            
             bool[,] generation = gameEngine.GetGeneration();
 
             for (int x = 0; x < generation.GetLength(0); x++)
@@ -60,7 +57,7 @@ namespace Game_of_life
 
                     if (hasLife)
                     {
-                        graphics.FillRectangle(Brushes.YellowGreen, x * resolution, y * resolution, resolution, resolution);
+                        graphics.FillRectangle(cellFullColor, x * resolution, y * resolution, resolution, resolution);
                     }
                 }
             }
@@ -68,58 +65,14 @@ namespace Game_of_life
             pictureBox.Refresh();
         }
 
-        public void StopGame()
-        {
-            if (!timer.Enabled)
-                return;
-            timer.Stop();
-            nudDensity.Enabled = true;
-            nudResolution.Enabled = true;
-        }
-
-
-        public void ManualMode()
-        {
-            timer.Stop();
-
-            resolution = (int)nudResolution.Value;
-            butStop.Enabled = true;
-            butManualStart.Enabled = true;
-
-            gameEngine = new GameEngine
-            (pictureBox.Width / resolution,
-             pictureBox.Width / resolution,
-             (int)nudDensity.Value
-            );
-
-            //pictureBox.Image = new Bitmap(pictureBox.Width, pictureBox.Height);
-            //graphics = Graphics.FromImage(pictureBox.Image);
-            //graphics.Clear(Color.LemonChiffon);
-
-            timer1.Start();
-        }
-
-        private void AntMode()
-        {
-            resolution = (int)nudResolution.Value;
-
-            gameEngine = new GameEngine
-           (pictureBox.Width / resolution,
-            pictureBox.Width / resolution,
-            (int)nudDensity.Value
-           );
-
-            timerAnt.Start();
-        }
-
         private void AntDrawing()
         {
-            pictureBox.Image = new Bitmap(pictureBox.Width, pictureBox.Height);
-            graphics = Graphics.FromImage(pictureBox.Image);
-            graphics.Clear(Color.LemonChiffon);
+            SetGraphics();
 
             bool[,] generation = gameEngine.GetGeneration();
             int[] antCoordinates = gameEngine.GetAntCoordinates();
+            int xAnt = antCoordinates[0];
+            int yAnt = antCoordinates[1];
 
             for (int x = 0; x < generation.GetLength(0); x++)
             {
@@ -129,11 +82,12 @@ namespace Game_of_life
 
                     if (hasLife)
                     {
-                        graphics.FillRectangle(Brushes.YellowGreen, x * resolution, y * resolution, resolution, resolution);
+                        graphics.FillRectangle(cellFullColor, x * resolution, y * resolution, resolution, resolution);
 
-                    } else if (generation[antCoordinates[0], antCoordinates[1]])
+                    }
+                    else if (x == xAnt && y == yAnt)
                     {
-                        graphics.FillRectangle(Brushes.Brown, x * resolution, y * resolution, resolution, resolution);
+                        graphics.FillRectangle(antColor, x * resolution, y * resolution, resolution, resolution);
                     }
 
                 }
@@ -142,26 +96,145 @@ namespace Game_of_life
             pictureBox.Refresh();
         }
 
+        public void StartGame()
+        {
+            timerAnt.Stop();
+            if (timer.Enabled)
+                return;
+
+            nudDensity.Enabled = false;
+            nudResolution.Enabled = false;
+            butStop.Enabled = true;
+            butStopAnt.Enabled = false;
+
+            SetProperties();
+            gameEngine.FieldFooling();
+
+            timer.Start();
+            timer1.Start();
+            
+        }
+
+        public void ManualMode()
+        {
+            timerAnt.Stop();
+            timer.Stop();
+
+            butStop.Enabled = true;
+            butManualStart.Enabled = true;
+            butStopAnt.Enabled = false;
+
+            SetProperties();
+
+            timer1.Start();
+        }
+
+        private void AntMode()
+        {
+            timer.Stop();
+            timer1.Stop();
+
+            butStopAnt.Enabled = true;
+            butManualStart.Enabled = false;
+
+            SetProperties();
+            timerAnt.Start();
+        }
+
+        public void StopGame()
+        {
+            if (timer.Enabled)
+            {
+                timer.Stop();
+
+            } else if (timerAnt.Enabled)
+            {
+                timerAnt.Stop();
+            } 
+            
+            nudDensity.Enabled = true;
+            nudResolution.Enabled = true;
+        }
+
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            butStop.Enabled = false;
+            butManualStart.Enabled = false;
+            butStopAnt.Enabled = false;
+        }
+
         private void butStartClick(object sender, EventArgs e)
         {
             StartGame();
         }
-
-        private void timerTick(object sender, EventArgs e)
+        private void butManualModeClick(object sender, EventArgs e)
         {
-            gameEngine.CellGeneration();
+            ManualMode();
         }
-
+        private void butManualStartClick(object sender, EventArgs e)
+        {
+            timer.Start();
+        }
+        private void butAnt_Click(object sender, EventArgs e)
+        {
+            AntMode();
+        }
         private void butStopClick(object sender, EventArgs e)
         {
             if (timer.Enabled)
             {
-                StopGame();  
-            } else
+                StopGame();
+            }
+            else
             {
                 timer.Start();
             }
         }
+        private void butStopAnt_Click(object sender, EventArgs e)
+        {
+            if (timerAnt.Enabled)
+            {
+                timerAnt.Stop();
+            }
+            else
+            {
+                timerAnt.Start();
+            }
+        }
+
+
+        private void pictureBoxBackColor_Click(object sender, EventArgs e)
+        {
+            DialogResult colorDialog = colorDialog1.ShowDialog();
+
+            if (colorDialog == DialogResult.OK)
+            {
+                pictureBoxBackColor.BackColor = colorDialog1.Color;
+                backColor = colorDialog1.Color;
+            }
+        }
+        private void pictureBoxCellFullColor_Click(object sender, EventArgs e)
+        {
+            DialogResult colorDialog = colorDialog1.ShowDialog();
+
+            if (colorDialog == DialogResult.OK)
+            {
+                pictureBoxCellFullColor.BackColor = colorDialog1.Color;
+                cellFullColor.Color = colorDialog1.Color;
+            }
+        }
+        private void pictureBoxAntColor_Click(object sender, EventArgs e)
+        {
+            DialogResult colorDialog = colorDialog1.ShowDialog();
+
+            if (colorDialog == DialogResult.OK)
+            {
+                pictureBoxAntColor.BackColor = colorDialog1.Color;
+                antColor.Color = colorDialog1.Color;
+            }
+        }
+
 
         private void pictureBox_MouseMove(object sender, MouseEventArgs e)
         {
@@ -180,7 +253,6 @@ namespace Game_of_life
                 gameEngine.RemoveCell(x, y);
             }
         }
-
         private void pictureBox_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -192,36 +264,21 @@ namespace Game_of_life
             }
         }
 
-        private void butManualModeClick(object sender, EventArgs e)
-        {
-            ManualMode();
-        }
 
-        private void butManualStartClick(object sender, EventArgs e)
+        private void timerTick(object sender, EventArgs e)
         {
-            timer.Start();
+            gameEngine.CellGeneration();
         }
-
         private void timer1Tick(object sender, EventArgs e)
         {
             CellDrawing();
         }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            butStop.Enabled = false;
-            butManualStart.Enabled = false;
-        }
-
         private void timerAnt_Tick(object sender, EventArgs e)
         {
             gameEngine.AntStart();
-            CellDrawing();
+            AntDrawing();
         }
 
-        private void butAnt_Click(object sender, EventArgs e)
-        {
-            AntMode();
-        }
+        
     }
 }

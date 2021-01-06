@@ -93,6 +93,19 @@ namespace Game_of_life
             field = newField;
         }
 
+        /*public int[,] AntCreating()
+        {
+            int[,] antsCoordinates = new int[density, density];
+
+            for (int x = 0; x < antCoordinates.GetLength(0); x++)
+            {
+                for (int y = 0; y < antCoordinates.GetLength(1); y++)
+                {
+                    antsCoordinates[x, y] = random.Next(density);
+                }
+            }
+        }*/
+
 
         public void AntStart()
         {

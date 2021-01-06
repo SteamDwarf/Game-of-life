@@ -11,8 +11,12 @@ namespace Game_of_life
         private bool[,] field;
         private int columns;
         private int rows;
-        int density;
+        private int density;
+        private int[] antCoordinates = new int[2] {80, 35};
+        private int antCount = 0;
+        private int status = 0;
         Random random = new Random();
+        Ant ant = new Ant();
 
         public GameEngine(int columns, int rows, int density)
         {
@@ -87,6 +91,30 @@ namespace Game_of_life
             }
 
             field = newField;
+        }
+
+
+        public void AntStart()
+        {
+            int[] output = ant.AntRun(status, antCount, field, antCoordinates);
+            int x = output[0];
+            int y = output[1];
+            status = output[2];
+
+            antCoordinates[0] = x;
+            antCoordinates[1] = y;
+            antCount++;
+
+            if (antCount > 3)
+            {
+                antCount = 0;
+            }
+
+        }
+
+        public int[] GetAntCoordinates()
+        {
+            return antCoordinates;
         }
 
         public bool[,] GetGeneration()

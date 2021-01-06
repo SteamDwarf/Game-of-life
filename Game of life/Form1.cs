@@ -28,6 +28,7 @@ namespace Game_of_life
 
             nudDensity.Enabled = false;
             nudResolution.Enabled = false;
+            butStop.Enabled = true;
 
             resolution = (int)nudResolution.Value;
             decimal density = nudDensity.Maximum + nudDensity.Minimum - nudDensity.Value;
@@ -39,14 +40,14 @@ namespace Game_of_life
             );
             gameEngine.FieldFooling();
 
-            pictureBox.Image = new Bitmap(pictureBox.Width, pictureBox.Height);
-            graphics = Graphics.FromImage(pictureBox.Image);
             timer.Start();
             timer1.Start();
         }
 
         private void CellDrawing()
         {
+            pictureBox.Image = new Bitmap(pictureBox.Width, pictureBox.Height);
+            graphics = Graphics.FromImage(pictureBox.Image);
             graphics.Clear(Color.LemonChiffon);
 
             bool[,] generation = gameEngine.GetGeneration();
@@ -82,6 +83,8 @@ namespace Game_of_life
             timer.Stop();
 
             resolution = (int)nudResolution.Value;
+            butStop.Enabled = true;
+            butManualStart.Enabled = true;
 
             gameEngine = new GameEngine
             (pictureBox.Width / resolution,
@@ -89,11 +92,54 @@ namespace Game_of_life
              (int)nudDensity.Value
             );
 
+            //pictureBox.Image = new Bitmap(pictureBox.Width, pictureBox.Height);
+            //graphics = Graphics.FromImage(pictureBox.Image);
+            //graphics.Clear(Color.LemonChiffon);
+
+            timer1.Start();
+        }
+
+        private void AntMode()
+        {
+            resolution = (int)nudResolution.Value;
+
+            gameEngine = new GameEngine
+           (pictureBox.Width / resolution,
+            pictureBox.Width / resolution,
+            (int)nudDensity.Value
+           );
+
+            timerAnt.Start();
+        }
+
+        private void AntDrawing()
+        {
             pictureBox.Image = new Bitmap(pictureBox.Width, pictureBox.Height);
             graphics = Graphics.FromImage(pictureBox.Image);
             graphics.Clear(Color.LemonChiffon);
 
-            timer1.Start();
+            bool[,] generation = gameEngine.GetGeneration();
+            int[] antCoordinates = gameEngine.GetAntCoordinates();
+
+            for (int x = 0; x < generation.GetLength(0); x++)
+            {
+                for (int y = 0; y < generation.GetLength(1); y++)
+                {
+                    bool hasLife = generation[x, y];
+
+                    if (hasLife)
+                    {
+                        graphics.FillRectangle(Brushes.YellowGreen, x * resolution, y * resolution, resolution, resolution);
+
+                    } else if (generation[antCoordinates[0], antCoordinates[1]])
+                    {
+                        graphics.FillRectangle(Brushes.Brown, x * resolution, y * resolution, resolution, resolution);
+                    }
+
+                }
+            }
+
+            pictureBox.Refresh();
         }
 
         private void butStartClick(object sender, EventArgs e)
@@ -161,5 +207,21 @@ namespace Game_of_life
             CellDrawing();
         }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            butStop.Enabled = false;
+            butManualStart.Enabled = false;
+        }
+
+        private void timerAnt_Tick(object sender, EventArgs e)
+        {
+            gameEngine.AntStart();
+            CellDrawing();
+        }
+
+        private void butAnt_Click(object sender, EventArgs e)
+        {
+            AntMode();
+        }
     }
 }

@@ -31,6 +31,7 @@ namespace Game_of_life
         {
             this.components = new System.ComponentModel.Container();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.butAnt = new System.Windows.Forms.Button();
             this.butManualStart = new System.Windows.Forms.Button();
             this.butManualMode = new System.Windows.Forms.Button();
             this.butStop = new System.Windows.Forms.Button();
@@ -42,6 +43,7 @@ namespace Game_of_life
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.timerAnt = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -62,6 +64,7 @@ namespace Game_of_life
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.butAnt);
             this.splitContainer1.Panel1.Controls.Add(this.butManualStart);
             this.splitContainer1.Panel1.Controls.Add(this.butManualMode);
             this.splitContainer1.Panel1.Controls.Add(this.butStop);
@@ -77,6 +80,16 @@ namespace Game_of_life
             this.splitContainer1.Size = new System.Drawing.Size(771, 447);
             this.splitContainer1.SplitterDistance = 159;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // butAnt
+            // 
+            this.butAnt.Location = new System.Drawing.Point(4, 342);
+            this.butAnt.Name = "butAnt";
+            this.butAnt.Size = new System.Drawing.Size(148, 23);
+            this.butAnt.TabIndex = 8;
+            this.butAnt.Text = "Запуск Муравья";
+            this.butAnt.UseVisualStyleBackColor = true;
+            this.butAnt.Click += new System.EventHandler(this.butAnt_Click);
             // 
             // butManualStart
             // 
@@ -189,6 +202,11 @@ namespace Game_of_life
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1Tick);
             // 
+            // timerAnt
+            // 
+            this.timerAnt.Interval = 1;
+            this.timerAnt.Tick += new System.EventHandler(this.timerAnt_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -198,6 +216,7 @@ namespace Game_of_life
             this.Name = "Form1";
             this.Text = "Form1";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -224,6 +243,8 @@ namespace Game_of_life
         private System.Windows.Forms.Button butManualMode;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button butManualStart;
+        private System.Windows.Forms.Button butAnt;
+        private System.Windows.Forms.Timer timerAnt;
     }
 }
 

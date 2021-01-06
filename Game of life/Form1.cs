@@ -24,6 +24,7 @@ namespace Game_of_life
             InitializeComponent();
         }
 
+
         private void SetGraphics()
         {
             pictureBox.Image = new Bitmap(pictureBox.Width, pictureBox.Height);
@@ -38,7 +39,7 @@ namespace Game_of_life
 
             gameEngine = new GameEngine
            (pictureBox.Width / resolution,
-            pictureBox.Width / resolution,
+            pictureBox.Height / resolution,
             (int)density
            );
         }
@@ -70,35 +71,32 @@ namespace Game_of_life
             SetGraphics();
 
             bool[,] generation = gameEngine.GetGeneration();
-            Ant[,] ants = gameEngine.GetAnts(); 
-
+            Ant[,] ants = gameEngine.GetAnts();
 
             for (int x = 0; x < generation.GetLength(0); x++)
             {
                 for (int y = 0; y < generation.GetLength(1); y++)
                 {
-                    bool trueField = generation[x, y];
+                    bool hasLife = generation[x, y];
 
-                    if (trueField)
+                    if (hasLife)
                     {
                         graphics.FillRectangle(cellFullColor, x * resolution, y * resolution, resolution, resolution);
-
                     }
+                }
+            }
 
-                    for (int xAnt = 0; xAnt < ants.GetLength(0); xAnt++)
-                    {
-                        for (int yAnt = 0; yAnt < ants.GetLength(1); yAnt++)
-                        {
-                            Ant ant = ants[xAnt, yAnt];
-                            int[] antCordinates = ant.GetAntCordinates();
+            for (int x = 0; x < ants.GetLength(0); x++)
+            {
+                for (int y = 0; y < ants.GetLength(1); y++)
+                {
+                    Ant ant = ants[x, y];
+                    int[] antCordinates = ant.GetAntCordinates();
+                    int xAnt = antCordinates[0];
+                    int yAnt = antCordinates[1];
 
-                            if (x == antCordinates[0] && y == antCordinates[1])
-                            {
-                                graphics.FillRectangle(antColor, x * resolution, y * resolution, resolution, resolution);
-                            }
-                        }
-                    }
-
+                    graphics.FillRectangle(antColor, xAnt * resolution, yAnt * resolution, resolution, resolution);
+ 
                 }
             }
 
@@ -168,6 +166,45 @@ namespace Game_of_life
             nudResolution.Enabled = true;
         }
 
+        private void TimerSpeedChange()
+        {
+            if (timer.Interval == 1 && timer1.Interval == 1 && timerAnt.Interval == 1)
+            {
+                timer.Interval = 20;
+                timer1.Interval = 20;
+                timerAnt.Interval = 20;
+                butTimerSpeedChange.Text = "Быстрая скорость";
+
+            } else if (timer.Interval == 20 && timer1.Interval == 20 && timerAnt.Interval == 20)
+            {
+                timer.Interval = 50;
+                timer1.Interval = 50;
+                timerAnt.Interval = 50;
+                butTimerSpeedChange.Text = "Средняя скорость";
+            }
+            else if (timer.Interval == 50 && timer1.Interval == 50 && timerAnt.Interval == 50)
+            {
+                timer.Interval = 100;
+                timer1.Interval = 100;
+                timerAnt.Interval = 100;
+                butTimerSpeedChange.Text = "Медленная скорость";
+
+            } 
+            else if (timer.Interval == 100 && timer1.Interval == 100 && timerAnt.Interval == 100) 
+            {
+                timer.Interval = 200;
+                timer1.Interval = 200;
+                timerAnt.Interval = 200;
+                butTimerSpeedChange.Text = "Очень медленная скорость";
+
+            } else
+            {
+                timer.Interval = 1;
+                timer1.Interval = 1;
+                timerAnt.Interval = 1;
+                butTimerSpeedChange.Text = "Очень быстрая скорость";
+            }
+        }
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -214,7 +251,10 @@ namespace Game_of_life
                 timerAnt.Start();
             }
         }
-
+        private void butTimerSpeedChange_Click(object sender, EventArgs e)
+        {
+            TimerSpeedChange();
+        }
 
         private void pictureBoxBackColor_Click(object sender, EventArgs e)
         {
@@ -289,7 +329,6 @@ namespace Game_of_life
         {
             gameEngine.AntStart();
             AntDrawing();
-
         }
     }
 }

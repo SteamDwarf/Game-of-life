@@ -30,7 +30,28 @@ namespace Game_of_life
             {
                 for (int y = 0; y < rows; y++)
                 {
-                    field[x, y] = random.Next(density) == 0;
+                    field[x , y] = random.Next(density) == 0;
+
+                    /*if ((x *y) % 22 != 0)
+                    {
+                        field[1, y] = true;
+
+                    } else
+                    {
+                        field[0, y] = true;
+                    }*/
+
+                    /*field[x, (rows / 2)] = true;
+                    field[columns / 2, y] = true;*/
+
+                    /*if ((4 * x + y) != 0)
+                    {
+                        field[1, y] = true;
+                    } else
+                    {
+                        field[0, y] = true;
+                    }*/
+
                 }
             }
         }

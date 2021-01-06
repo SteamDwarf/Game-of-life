@@ -31,6 +31,8 @@ namespace Game_of_life
         {
             this.components = new System.ComponentModel.Container();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.butTimerSpeedChange = new System.Windows.Forms.Button();
+            this.butStopAnt = new System.Windows.Forms.Button();
             this.pictureBoxAntColor = new System.Windows.Forms.PictureBox();
             this.label5 = new System.Windows.Forms.Label();
             this.pictureBoxCellFullColor = new System.Windows.Forms.PictureBox();
@@ -51,7 +53,6 @@ namespace Game_of_life
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.timerAnt = new System.Windows.Forms.Timer(this.components);
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.butStopAnt = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -75,6 +76,7 @@ namespace Game_of_life
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.butTimerSpeedChange);
             this.splitContainer1.Panel1.Controls.Add(this.butStopAnt);
             this.splitContainer1.Panel1.Controls.Add(this.pictureBoxAntColor);
             this.splitContainer1.Panel1.Controls.Add(this.label5);
@@ -98,6 +100,27 @@ namespace Game_of_life
             this.splitContainer1.Size = new System.Drawing.Size(771, 447);
             this.splitContainer1.SplitterDistance = 159;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // butTimerSpeedChange
+            // 
+            this.butTimerSpeedChange.Location = new System.Drawing.Point(10, 417);
+            this.butTimerSpeedChange.Name = "butTimerSpeedChange";
+            this.butTimerSpeedChange.Size = new System.Drawing.Size(137, 23);
+            this.butTimerSpeedChange.TabIndex = 17;
+            this.butTimerSpeedChange.Text = "Средня скорость";
+            this.butTimerSpeedChange.UseVisualStyleBackColor = true;
+            this.butTimerSpeedChange.Click += new System.EventHandler(this.butTimerSpeedChange_Click);
+            // 
+            // butStopAnt
+            // 
+            this.butStopAnt.BackColor = System.Drawing.SystemColors.Control;
+            this.butStopAnt.Location = new System.Drawing.Point(4, 291);
+            this.butStopAnt.Name = "butStopAnt";
+            this.butStopAnt.Size = new System.Drawing.Size(148, 23);
+            this.butStopAnt.TabIndex = 16;
+            this.butStopAnt.Text = "Остановить муравья";
+            this.butStopAnt.UseVisualStyleBackColor = false;
+            this.butStopAnt.Click += new System.EventHandler(this.butStopAnt_Click);
             // 
             // pictureBoxAntColor
             // 
@@ -285,27 +308,16 @@ namespace Game_of_life
             // 
             // timerAnt
             // 
-            this.timerAnt.Interval = 1;
+            this.timerAnt.Interval = 50;
             this.timerAnt.Tick += new System.EventHandler(this.timerAnt_Tick);
-            // 
-            // butStopAnt
-            // 
-            this.butStopAnt.BackColor = System.Drawing.SystemColors.Control;
-            this.butStopAnt.Location = new System.Drawing.Point(4, 291);
-            this.butStopAnt.Name = "butStopAnt";
-            this.butStopAnt.Size = new System.Drawing.Size(148, 23);
-            this.butStopAnt.TabIndex = 16;
-            this.butStopAnt.Text = "Остановить муравья";
-            this.butStopAnt.UseVisualStyleBackColor = false;
-            this.butStopAnt.Click += new System.EventHandler(this.butStopAnt_Click);
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(771, 447);
             this.Controls.Add(this.splitContainer1);
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -348,6 +360,7 @@ namespace Game_of_life
         private System.Windows.Forms.PictureBox pictureBoxAntColor;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button butStopAnt;
+        private System.Windows.Forms.Button butTimerSpeedChange;
     }
 }
 

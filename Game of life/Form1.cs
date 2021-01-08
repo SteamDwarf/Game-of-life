@@ -24,7 +24,7 @@ namespace Game_of_life
             InitializeComponent();
         }
 
-
+        //Настройка графической части: настройка pictureBox и graphics
         private void SetGraphics()
         {
             pictureBox.Image = new Bitmap(pictureBox.Width, pictureBox.Height);
@@ -32,18 +32,19 @@ namespace Game_of_life
             graphics.Clear(backColor);
         }
 
+
         private void SetProperties()
         {
             resolution = (int)nudResolution.Value;
             decimal density = nudDensity.Maximum + nudDensity.Minimum - nudDensity.Value;
 
-            gameEngine = new GameEngine
-           (pictureBox.Width / resolution,
-            pictureBox.Height / resolution,
-            (int)density
-           );
+            gameEngine = new GameEngine(
+                pictureBox.Width / resolution,
+                pictureBox.Height / resolution,
+                (int)density);          
         }
 
+        //Отрисовка клеток с значение true
         private void CellDrawing()
         {
             SetGraphics();
@@ -66,6 +67,7 @@ namespace Game_of_life
             pictureBox.Refresh();
         }
 
+        //Отрисовка клеток с значением true, и муравьев
         private void AntDrawing()
         {
             SetGraphics();
@@ -103,12 +105,11 @@ namespace Game_of_life
             pictureBox.Refresh();
         }
 
+        //Метод запускающий игру "Жизнь" со случайной генерацией клеток
         public void StartGame()
         {
             timerAnt.Stop();
-            if (timer.Enabled)
-                return;
-
+            
             nudDensity.Enabled = false;
             nudResolution.Enabled = false;
             butStop.Enabled = true;
@@ -122,6 +123,7 @@ namespace Game_of_life
             
         }
 
+        //Метод перехода в режим редактирования для игры "Жизнь"
         public void ManualMode()
         {
             timerAnt.Stop();
@@ -136,6 +138,7 @@ namespace Game_of_life
             timer1.Start();
         }
 
+        //Метод запускающий муравья Лэнгтона
         private void AntMode()
         {
             timer.Stop();
@@ -143,14 +146,18 @@ namespace Game_of_life
 
             int density = (int)nudDensity.Value;
 
+            nudDensity.Enabled = false;
+            nudResolution.Enabled = false;
             butStopAnt.Enabled = true;
             butManualStart.Enabled = false;
+            butStop.Enabled = false;
 
             SetProperties();
             gameEngine.AntCreating(density);
             timerAnt.Start();
         }
 
+        //Остановка таймеров игры "Жизнь"
         public void StopGame()
         {
             if (timer.Enabled)
@@ -166,6 +173,7 @@ namespace Game_of_life
             nudResolution.Enabled = true;
         }
 
+        //Изменение интервалов таймеров для всех режимов
         private void TimerSpeedChange()
         {
             if (timer.Interval == 1 && timer1.Interval == 1 && timerAnt.Interval == 1)
@@ -206,6 +214,7 @@ namespace Game_of_life
             }
         }
 
+        //Необходимые продосторожности при запуске приложения: отключение ненужных, на момент запуска, кнопок
         private void Form1_Load(object sender, EventArgs e)
         {
             butStop.Enabled = false;
@@ -213,22 +222,27 @@ namespace Game_of_life
             butStopAnt.Enabled = false;
         }
 
+        //Кнопка запуска игры "Жизнь" со случайной генерацией клеток
         private void butStartClick(object sender, EventArgs e)
         {
             StartGame();
         }
+        //Кнопка перехода в режим редактирования
         private void butManualModeClick(object sender, EventArgs e)
         {
             ManualMode();
         }
+        //Кнопка запуска симуляции игры "Жизнь" в режиме редактирования
         private void butManualStartClick(object sender, EventArgs e)
         {
             timer.Start();
         }
+        //Кнопка запускающая муравья Лэнгтона
         private void butAnt_Click(object sender, EventArgs e)
         {
             AntMode();
         }
+        //Кнопка остановки симуляции для игры "Жизнь"
         private void butStopClick(object sender, EventArgs e)
         {
             if (timer.Enabled)
@@ -240,10 +254,13 @@ namespace Game_of_life
                 timer.Start();
             }
         }
+        //Кнопка остановки симуляции муравья Лэнгтона
         private void butStopAnt_Click(object sender, EventArgs e)
         {
             if (timerAnt.Enabled)
             {
+                nudDensity.Enabled = true;
+                nudResolution.Enabled = true;
                 timerAnt.Stop();
             }
             else
@@ -251,11 +268,14 @@ namespace Game_of_life
                 timerAnt.Start();
             }
         }
+
+        //Кнопка изменения интервалов таймеров
         private void butTimerSpeedChange_Click(object sender, EventArgs e)
         {
             TimerSpeedChange();
         }
 
+        //Событие, позволяющее поменять цвет заднего фона для всех режимов
         private void pictureBoxBackColor_Click(object sender, EventArgs e)
         {
             DialogResult colorDialog = colorDialog1.ShowDialog();
@@ -266,6 +286,7 @@ namespace Game_of_life
                 backColor = colorDialog1.Color;
             }
         }
+        //Событие, позволяющее поменять цвет клеток со значением true для всех режимов
         private void pictureBoxCellFullColor_Click(object sender, EventArgs e)
         {
             DialogResult colorDialog = colorDialog1.ShowDialog();
@@ -276,6 +297,7 @@ namespace Game_of_life
                 cellFullColor.Color = colorDialog1.Color;
             }
         }
+        //Событие, позволяющее поменять цвет муравья
         private void pictureBoxAntColor_Click(object sender, EventArgs e)
         {
             DialogResult colorDialog = colorDialog1.ShowDialog();
@@ -287,7 +309,7 @@ namespace Game_of_life
             }
         }
 
-
+        //Событие добавления и удаления значения true для клетки, при проведении мышкой с зажатой кнопкой 
         private void pictureBox_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -305,6 +327,7 @@ namespace Game_of_life
                 gameEngine.RemoveCell(x, y);
             }
         }
+        //Событие добавления и удаления значения true для клетки, при нажатии кнопки мыши
         private void pictureBox_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -313,18 +336,27 @@ namespace Game_of_life
                 int y = e.Location.Y / resolution;
 
                 gameEngine.AddCell(x, y);
+
+            } else if (e.Button == MouseButtons.Right)
+            {
+                int x = e.Location.X / resolution;
+                int y = e.Location.Y / resolution;
+
+                gameEngine.RemoveCell(x, y);
             }
         }
 
-
+        //Симуляция клеток, при каждом тике таймера
         private void timerTick(object sender, EventArgs e)
         {
             gameEngine.CellGeneration();
         }
+        //Отрисовка клеток со значением true, при каждом тике таймера
         private void timer1Tick(object sender, EventArgs e)
         {
             CellDrawing();
         }
+        //Симуляция и отрисовка муравья, при каждом тике таймера
         private void timerAnt_Tick(object sender, EventArgs e)
         {
             gameEngine.AntStart();

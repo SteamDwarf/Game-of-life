@@ -252,12 +252,17 @@ namespace Game_of_life
             0,
             0,
             0});
+            this.nudDensity.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.nudDensity.Name = "nudDensity";
             this.nudDensity.Size = new System.Drawing.Size(120, 20);
             this.nudDensity.TabIndex = 2;
             this.nudDensity.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudDensity.Value = new decimal(new int[] {
-            15,
+            10,
             0,
             0,
             0});
@@ -268,19 +273,24 @@ namespace Game_of_life
             this.label1.Font = new System.Drawing.Font("Times New Roman", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label1.Location = new System.Drawing.Point(10, 16);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(92, 17);
+            this.label1.Size = new System.Drawing.Size(72, 17);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Разрешение";
+            this.label1.Text = "Масштаб";
             // 
             // nudResolution
             // 
             this.nudResolution.Location = new System.Drawing.Point(10, 36);
+            this.nudResolution.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.nudResolution.Name = "nudResolution";
             this.nudResolution.Size = new System.Drawing.Size(120, 20);
             this.nudResolution.TabIndex = 0;
             this.nudResolution.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.nudResolution.Value = new decimal(new int[] {
-            10,
+            5,
             0,
             0,
             0});

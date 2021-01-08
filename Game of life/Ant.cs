@@ -18,18 +18,20 @@ namespace Game_of_life
 
         public Ant(int x, int y)
         {
+            /*Queue<int[]> steps = new Queue<int[]>();
+            int[] step = { 1, 0 };
+            steps.Enqueue({1,0});*/
             this.x = x;
             this.y = y;
             count = 0;
             status = 0;
-
         }
 
+        //Метод, отвечающий за расчет новых координат муравья
         private void Switch(bool [,] field)
         {
             int columns = field.GetLength(0);
             int rows = field.GetLength(1);
-            int[] output = new int[2];
 
             if (status == 0)
             {
@@ -44,6 +46,7 @@ namespace Game_of_life
 
         }
 
+        //Метод, отвечающий за смену состояния муравья и окрашивание клетки
         public void AntRun(bool[,] field)
         {
 
@@ -77,9 +80,9 @@ namespace Game_of_life
             Switch(field);
 
             count++;
-
         }
 
+        //Получение текущих координат муравья
         public int[] GetAntCordinates()
         {
             int[] cordinates = new int[2];

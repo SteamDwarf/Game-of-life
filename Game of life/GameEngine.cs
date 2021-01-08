@@ -24,6 +24,7 @@ namespace Game_of_life
             field = new bool[columns, rows];
         }
 
+        //Заполнение матрицы поля значениями true и false
          public void FieldFooling()
         {
             for (int x = 0; x < columns; x++)
@@ -56,6 +57,7 @@ namespace Game_of_life
             }
         }
 
+        //Подсчет количества соседей для каждой клетки
         private int CountNeighbours(int x, int y)
         {
             int neighbours = 0;
@@ -80,6 +82,7 @@ namespace Game_of_life
             return neighbours;
         }
 
+        //Расчет следующего поколения клеток: расчет новой матриц, с учетом подсчета соседей клеток
         public void CellGeneration()
         {
             var newField = new bool[columns, rows];
@@ -112,42 +115,7 @@ namespace Game_of_life
             field = newField;
         }
 
-        public void AntCreating(int density)
-        {
-            ants = new Ant[density / 2, density / 2];
-
-            for(int x = 0; x < ants.GetLength(0); x++)
-            {
-                for (int y = 0; y < ants.GetLength(1); y++)
-                {
-                    int xAnt = (random.Next(columns) + columns) % columns;
-                    int yAnt = (random.Next(rows) + rows) % rows;
-
-                    Ant ant = new Ant(xAnt, yAnt);
-
-                    ants[x, y] = ant;
-                }
-            }
-        }
-
-
-        public void AntStart()
-        {
-            for (int x = 0; x < ants.GetLength(0); x++)
-            {
-                for (int y = 0; y < ants.GetLength(1); y++)
-                {
-                    Ant ant = ants[x, y];
-                    ant.AntRun(field);
-                }
-            }
-        }
-
-        public Ant[,] GetAnts()
-        {
-            return ants;
-        }
-
+        //Получение матрицы следующего поколения клеток
         public bool[,] GetGeneration()
         {
             bool[,] newGeneration = new bool[columns, rows];
@@ -163,24 +131,78 @@ namespace Game_of_life
             return newGeneration;
         }
 
-        public bool ValidationCoordinates(int x, int y)
+        //Заполнение матрицы, содержащую объекты класса Ant
+        public void AntCreating(int density)
+        {
+            ants = new Ant[density, density];
+
+            for (int x = 0; x < ants.GetLength(0); x++)
+            {
+                for (int y = 0; y < ants.GetLength(1); y++)
+                {
+                    int xAnt = (random.Next(columns) + columns) % columns;
+                    int yAnt = (random.Next(rows) + rows) % rows;
+
+                    Ant ant = new Ant(xAnt, yAnt);
+
+                    ants[x, y] = ant;
+                }
+            }
+        }
+
+        //Запуск действий муравья
+        public void AntStart()
+        {
+            for (int x = 0; x < ants.GetLength(0); x++)
+            {
+                for (int y = 0; y < ants.GetLength(1); y++)
+                {
+                    Ant ant = ants[x, y];
+                    ant.AntRun(field);
+                }
+            }
+        }
+
+        //Получение матрицы, содержащую объекты Ant
+        public Ant[,] GetAnts()
+        {
+            int columns = ants.GetLength(0);
+            int rows = ants.GetLength(1);
+
+            Ant[,] antsCopy = new Ant[columns, rows];
+
+            for (int x = 0; x < columns; x++)
+            {
+                for (int y = 0; y < rows; y++)
+                {
+                    antsCopy[x, y] = ants[x, y];
+                }
+            }
+            return antsCopy;
+        }
+
+        //Проверка координат, не выходят ли они за диапазон индексов матрицыы
+        public bool ValidationCordinates(int x, int y)
         {
             return x >= 0 && y >= 0 && x < columns && y < rows;
         }
 
+        //Метод, меняющий значения клетки
         private void ChangingCell(int x, int y, bool change)
         {
-            if (ValidationCoordinates(x, y))
+            if (ValidationCordinates(x, y))
             {
                 field[x, y] = change;
             }
         }
 
+        //Метод, отвечающий за добавление клетке значения true
         public void AddCell(int x, int y)
         {
             ChangingCell(x, y, true);
-        } 
-        
+        }
+
+        //Метод, отвечающий за добавление клетке значения false
         public void RemoveCell(int x, int y)
         {
             ChangingCell(x, y, false);

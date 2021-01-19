@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace Game_of_life
 {
@@ -13,7 +13,7 @@ namespace Game_of_life
         private int rows;
         private int density;
         private Ant[,] ants;
-        Random random = new Random();
+        private Random random = new Random();
 
         public GameEngine(int columns, int rows, int density)
         {
@@ -143,7 +143,7 @@ namespace Game_of_life
                     int xAnt = (random.Next(columns) + columns) % columns;
                     int yAnt = (random.Next(rows) + rows) % rows;
 
-                    Ant ant = new Ant(xAnt, yAnt);
+                    Ant ant = new Ant(xAnt, yAnt, field);
 
                     ants[x, y] = ant;
                 }
@@ -158,7 +158,7 @@ namespace Game_of_life
                 for (int y = 0; y < ants.GetLength(1); y++)
                 {
                     Ant ant = ants[x, y];
-                    ant.AntRun(field);
+                    ant.AntRun();
                 }
             }
         }
@@ -195,7 +195,6 @@ namespace Game_of_life
                 field[x, y] = change;
             }
         }
-
         //Метод, отвечающий за добавление клетке значения true
         public void AddCell(int x, int y)
         {

@@ -118,7 +118,7 @@ namespace Game_of_life
             this.butStopAnt.Name = "butStopAnt";
             this.butStopAnt.Size = new System.Drawing.Size(148, 23);
             this.butStopAnt.TabIndex = 16;
-            this.butStopAnt.Text = "Остановить муравья";
+            this.butStopAnt.Text = "Пауза/продолжить ";
             this.butStopAnt.UseVisualStyleBackColor = false;
             this.butStopAnt.Click += new System.EventHandler(this.butStopAnt_Click);
             // 

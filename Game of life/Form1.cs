@@ -114,6 +114,7 @@ namespace Game_of_life
             nudResolution.Enabled = false;
             butStop.Enabled = true;
             butStopAnt.Enabled = false;
+            pictureBox.Enabled = true;
 
             SetProperties();
             gameEngine.FieldFooling();
@@ -132,6 +133,7 @@ namespace Game_of_life
             butStop.Enabled = true;
             butManualStart.Enabled = true;
             butStopAnt.Enabled = false;
+            pictureBox.Enabled = true;
 
             SetProperties();
 
@@ -151,6 +153,7 @@ namespace Game_of_life
             butStopAnt.Enabled = true;
             butManualStart.Enabled = false;
             butStop.Enabled = false;
+            pictureBox.Enabled = true;
 
             SetProperties();
             gameEngine.AntCreating(density);
@@ -220,6 +223,7 @@ namespace Game_of_life
             butStop.Enabled = false;
             butManualStart.Enabled = false;
             butStopAnt.Enabled = false;
+            pictureBox.Enabled = false;
         }
 
         //Кнопка запуска игры "Жизнь" со случайной генерацией клеток
@@ -346,12 +350,12 @@ namespace Game_of_life
             }
         }
 
-        //Симуляция клеток, при каждом тике таймера
+        //Генерация нового поколения клеток, при каждом тике таймера
         private void timerTick(object sender, EventArgs e)
         {
             gameEngine.CellGeneration();
         }
-        //Отрисовка клеток со значением true, при каждом тике таймера
+        //Отрисовка клеток, при каждом тике таймера
         private void timer1Tick(object sender, EventArgs e)
         {
             CellDrawing();

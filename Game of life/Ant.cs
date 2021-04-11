@@ -6,12 +6,16 @@ using System.Threading.Tasks;
 
 namespace Game_of_life
 {
-    class Ant
+    interface IAnt
+    {
+        void Switch();
+        void AntRun();
+        int[] GetAntCordinates();
+    }
+    class Ant : IAnt
     {
         private int[,] stepsFalse = { { 1, 0, -1, 0 }, { 0, 1, 0, -1 } };
         private int[,] stepsTrue = { { -1, 0, 1, 0 }, { 0, -1, 0, 1 } };
-        //private Queue<int[]> stepsFalse;
-        //private Queue<int[]> stepsTrue;
         private int x;
         private int y; 
         private int status;
@@ -19,26 +23,7 @@ namespace Game_of_life
         private bool[,] field;
 
         public Ant(int x, int y, bool[,] field)
-        {
-           /*this.stepsFalse = new Queue<int[]>(
-                new[]
-                {
-                    new[] {1, 0},
-                    new[] {0, 1},
-                    new[] {-1, 0},
-                    new[] {0, -1}
-                }
-            );
-            this.stepsTrue = new Queue<int[]>(
-                new[]
-                {
-                    new[] {-1, 0},
-                    new[] {0, -1},
-                    new[] {1, 0},
-                    new[] {0, 1}
-                }
-            );*/
-            
+        {   
             this.x = x;
             this.y = y;
             this.field = field;
@@ -46,33 +31,8 @@ namespace Game_of_life
             count = 0;
         }
 
-       /* public void AntMove(bool[,] field)
-        {
-            int columns = field.GetLength(0);
-            int rows = field.GetLength(1);
-
-            if (status == 0)
-            {
-                int[] step = stepsFalse.Dequeue();
-                
-                x = (x + step[0] + columns) % columns;
-                y = (y + step[1] + rows) % rows;
-
-                stepsFalse.Enqueue(step);
-
-            } else if (status == 1)
-            {
-                int[] step = stepsTrue.Dequeue();
-                
-                x = (x + step[0] + columns) % columns;
-                y = (y + step[1] + rows) % rows;
-
-                stepsTrue.Enqueue(step);
-            }
-        }*/
-
         //Метод, отвечающий за расчет новых координат муравья
-        private void Switch()
+        public void Switch()
         {
             int columns = field.GetLength(0);
             int rows = field.GetLength(1);
@@ -123,6 +83,7 @@ namespace Game_of_life
             Switch();
             count++;
         }
+
 
         //Получение текущих координат муравья
         public int[] GetAntCordinates()
